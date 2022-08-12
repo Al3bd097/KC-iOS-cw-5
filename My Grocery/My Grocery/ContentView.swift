@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
   @State var grocery = ["pringles", "lays", "tomato", "pepsi"]
-    @State var selected = ""
+    @State var selected: String = ""
     @State var newItem = ""
         var body: some View {
             VStack{
-            List(grocery, id:\.self){  i in
+                List{
+                    ForEach(grocery, id:\.self){  i in
                
                 HStack {
                     Image(i)
@@ -24,7 +25,10 @@ struct ContentView: View {
                         .font(.system(size: 30, weight: .medium, design: .serif))
                         
             } // Hstack
-                
+                .onTapGesture {
+                    selected = i
+                }
+                    }
             } // list
             
                 
@@ -48,7 +52,9 @@ struct ContentView: View {
                         .autocapitalization(.none)
                         .padding()
                     Button {
-                        grocery.remove(at: 0)
+                        if let index = grocery.firstIndex(of: selected) {
+                            grocery.remove(at: index)
+                        }
                     } label: {
                         Image(systemName: "minus")
                             .resizable()
